@@ -27,17 +27,17 @@ jobs:
       - name: Locate Dockerfile and Context
         id: setup-build
         run: |
-          if [ -f "./src/${{ inputs.service }}/Dockerfile" ]; then
-            echo "file=./src/${{ inputs.service }}/Dockerfile" >> $GITHUB_OUTPUT
-            echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
-          elif [ -f "./src/${{ inputs.service }}/src/Dockerfile" ]; then
-            # cartservice uses src/Dockerfile with root folder context
+          if [ -f "./src/${{ inputs.service }}/src/Dockerfile" ]; then
+            # Cartservice and subfolder-based builds: context must be ./src/<service>/src
             echo "file=./src/${{ inputs.service }}/src/Dockerfile" >> $GITHUB_OUTPUT
+            echo "context=./src/${{ inputs.service }}/src" >> $GITHUB_OUTPUT
+          elif [ -f "./src/${{ inputs.service }}/Dockerfile" ]; then
+            echo "file=./src/${{ inputs.service }}/Dockerfile" >> $GITHUB_OUTPUT
             echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
           else
             FOUND_FILE=$(find "./src/${{ inputs.service }}" -name "Dockerfile" | head -n 1)
             echo "file=$FOUND_FILE" >> $GITHUB_OUTPUT
-            echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
+            echo "context=$(dirname "$FOUND_FILE")" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Docker Buildx
