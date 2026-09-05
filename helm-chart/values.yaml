@@ -18,38 +18,38 @@
 
 images:
   adservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/adservice
+    repository: lakshman1001/adservice
     # Overrides the image tag whose default is the chart appVersion.
     tag: v0.10.4
   cartservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/cartservice
+    repository: lakshman1001/cartservice
     tag: v0.10.4
   checkoutservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/checkoutservice
+    repository: lakshman1001/checkoutservice
     tag: v0.10.4
   currencyservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/currencyservice
+    repository: lakshman1001/currencyservice
     tag: v0.10.4
   emailservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/emailservice
+    repository: lakshman1001/emailservice
     tag: v0.10.4
   frontend:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/frontend
+    repository: lakshman1001/frontend
     tag: v0.10.4
   loadgenerator:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/loadgenerator
+    repository: lakshman1001/loadgenerator
     tag: v0.10.4
   paymentservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/paymentservice
+    repository: lakshman1001/paymentservice
     tag: v0.10.4
   productcatalogservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/productcatalogservice
+    repository: lakshman1001/productcatalogservice
     tag: v0.10.4
   recommendationservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/recommendationservice
+    repository: lakshman1001/recommendationservice
     tag: v0.10.4
   shippingservice:
-    repository: ghcr.io/laxmikantagiri/microservices-demo/shippingservice
+    repository: lakshman1001/shippingservice
     tag: v0.10.4
 
 serviceAccounts:
