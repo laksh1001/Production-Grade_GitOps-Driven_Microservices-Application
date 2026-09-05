@@ -24,6 +24,22 @@ jobs:
         env:
           OWNER: '${{ github.repository_owner }}'
 
+      - name: Locate Dockerfile and Context
+        id: setup-build
+        run: |
+          if [ -f "./src/${{ inputs.service }}/Dockerfile" ]; then
+            echo "file=./src/${{ inputs.service }}/Dockerfile" >> $GITHUB_OUTPUT
+            echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
+          elif [ -f "./src/${{ inputs.service }}/src/Dockerfile" ]; then
+            # cartservice uses src/Dockerfile with root folder context
+            echo "file=./src/${{ inputs.service }}/src/Dockerfile" >> $GITHUB_OUTPUT
+            echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
+          else
+            FOUND_FILE=$(find "./src/${{ inputs.service }}" -name "Dockerfile" | head -n 1)
+            echo "file=$FOUND_FILE" >> $GITHUB_OUTPUT
+            echo "context=./src/${{ inputs.service }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -37,7 +53,8 @@ jobs:
       - name: Build and Push with Buildx
         uses: docker/build-push-action@v6
         with:
-          context: ./src/${{ inputs.service }}
+          context: ${{ steps.setup-build.outputs.context }}
+          file: ${{ steps.setup-build.outputs.file }}
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/microservices-demo/${{ inputs.service }}:sha-${{ github.sha }}
           cache-from: type=gha
