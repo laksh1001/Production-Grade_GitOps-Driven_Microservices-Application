@@ -11,44 +11,44 @@ An enterprise-ready cloud-native microservices platform built on Amazon EKS, fea
 ```
 
 ```
-                  +---------------------------------------+
-                  |         AWS Application Gateway       |
-                  |          (AWS Gateway API / ALB)      |
-                  +-------------------+-------------------+
-                                      |
-    +------------------+--------------+-------------+------------------+
-    |                  |                            |                  |
-    v                  v                            v                  v
+## Architecture Overview
 
-```
-
+```text
+                      +---------------------------------------+
+                      |         AWS Application Gateway       |
+                      |          (AWS Gateway API / ALB)      |
+                      +-------------------+-------------------+
+                                          |
+        +------------------+--------------+-------------+------------------+
+        |                  |                            |                  |
+        v                  v                            v                  v
 +---------------+  +---------------+            +---------------+  +---------------+
 |  shop.*       |  |  argocd.*     |            |  kibana.*     |  |  grafana.*    |
 | (Boutique App)|  | (ArgoCD Server|            | (Kibana UI)   |  | (Grafana UI)  |
 +-------+-------+  +-------+-------+            +-------+-------+  +-------+-------+
-|                  |                            |                  |
-|                  |                            |                  v
-|                  |                            |          +---------------+
-|                  |                            |          |  Prometheus   |
-|                  |                            |          |  (Metrics API)|
-|                  |                            |          +-------+-------+
-|                  |                            |                  |
-|                  |                            v                  v
-|                  |                    +---------------+  +---------------+
-|                  |                    | Elasticsearch |  | Alertmanager  |
-|                  |                    | (ECK Cluster) |  |    (Slack)    |
-|                  |                    +-------^-------+  +---------------+
-|                  |                            |
-|                  |                    +-------+-------+
-|                  |                    |   Filebeat    |
-|                  |                    |  (DaemonSet)  |
-|                  |                    +---------------+
-v                  v
+        |                  |                            |                  |
+        |                  |                            |                  v
+        |                  |                            |          +---------------+
+        |                  |                            |          |  Prometheus   |
+        |                  |                            |          |  (Metrics API)|
+        |                  |                            |          +-------+-------+
+        |                  |                            |                  |
+        |                  |                            v                  v
+        |                  |                    +---------------+  +---------------+
+        |                  |                    | Elasticsearch |  | Alertmanager  |
+        |                  |                    | (ECK Cluster) |  |    (Slack)    |
+        |                  |                    +-------^-------+  +---------------+
+        |                  |                            |
+        |                  |                    +-------+-------+
+        |                  |                    |   Filebeat    |
+        |                  |                    |  (DaemonSet)  |
+        |                  |                    +---------------+
+        v                  v
 +----------------------------------------------------------------------------------+
 |                               Amazon EKS Cluster                                 |
 |   [boutique-app]               [argocd]                  [logging] / [monitoring]|
 +----------------------------------------------------------------------------------+
-
+```
 ```
 
 ---
@@ -83,45 +83,6 @@ v                  v
 
 
 ```
-
-├── .github/
-│   └── workflows/
-│       ├── ci-trigger.yaml                     # Trigger workflow for service updates
-│       └── microservices-ci.yaml             # Multi-service build & push pipeline
-├── argocd/
-│   └── application.yaml                      # ArgoCD Application definition for Boutique App
-├── docs/                                     # Implementation guides and screenshots
-├── external-dns/                             # Route 53 ExternalDNS manifests
-├── gateway-api-manifests/
-│   ├── alb-gateway.yaml                      # AWS Gateway API definition
-│   └── http-routes.yaml                      # HTTPRoutes for shop, argocd, kibana, grafana
-├── helm-chart/                               # Helm charts for microservices deployment
-├── istio-manifests/                          # Istio ServiceEntry and Gateway configs
-├── kubernetes-manifests/                     # Raw Kubernetes deployment manifests
-├── kustomize/                                # Kustomize overlays and base manifests
-├── microservices-extra-kube-manifests/       # Additional cluster routing manifests
-├── observability/
-│   ├── eck/
-│   │   ├── elasticsearch.yaml                # ECK Elasticsearch cluster CRD
-│   │   ├── kibana.yaml                       # ECK Kibana CRD
-│   │   └── filebeat.yaml                     # Filebeat DaemonSet configuration
-│   └── monitoring/
-│       ├── prometheus-values.yaml            # Helm values for kube-prometheus-stack
-│       └── alertmanager-slack.yaml           # Alertmanager Slack webhook configuration
-├── protos/                                   # gRPC protobuf definitions for Go/Java services
-├── release/                                  # Application release versioning manifests
-├── scaling/
-│   └── frontend-hpa.yaml                     # Horizontal Pod Autoscaler for frontend service
-├── src/                                      # Microservices source code (C#, Go, Java, Node.js, Python)
-├── terraform/                                # Infrastructure as Code
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── vpc.tf
-│   ├── eks.tf
-│   └── outputs.tf
-├── build-and-push.sh                         # Helper script for container builds
-├── kustomization.yaml                        # Top-level Kustomize configuration
-└── README.md
 
 
 ```
